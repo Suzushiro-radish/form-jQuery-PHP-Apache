@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<script
+			src="https://code.jquery.com/jquery-3.6.1.min.js"
+			integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+			crossorigin="anonymous"
+		></script>
+		<title>Form</title>
+	</head>
+	<body>
+		<h1 id="title">問い合わせフォーム</h1>
+		<form id="form" action="/php/confirm.php" method="post">
+			<label for="name">名前</label>
+			<input id="name" type="text" name="name" />
+			<span id="err-name" class="error"></span>
+			<button type="submit">送信</button>
+		</form>
+		<script src="/js/form.js"></script>
+	</body>
+</html>
