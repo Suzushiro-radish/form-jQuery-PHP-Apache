@@ -1,0 +1,32 @@
+# docker-compose.yml
+
+version: "3"
+
+services:
+  web:
+    container_name: docker-compose-mysql-web
+    build: ./php
+    ports:
+      - "80:80"
+    volumes:
+      - ../source:/var/www/html
+    hostname: localhost
+
+  mysql:
+    container_name: docker-compose-mysql-mysql
+    image: "arm64v8/mysql"
+    volumes:
+      - ./db/db_data:/var/lib/mysql
+    ports:
+      - "${FORWARD_DB_PORT}:3306"
+    hostname: localhost
+    restart: unless-stopped
+    environment:
+      # ユーザーアカウントとDBを設定
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_HOST: "${DB_HOST}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      TZ: "${TZ}"
