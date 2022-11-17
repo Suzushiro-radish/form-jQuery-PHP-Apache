@@ -23,6 +23,5 @@
         <div>名前：<?= $name ?></div>
         <button type="submit">送信</button>
     </form> 
-    <?php var_dump($err_name) ?> 
 </body>
 </html>
