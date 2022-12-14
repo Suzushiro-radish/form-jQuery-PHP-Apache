@@ -4,22 +4,180 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="style.css" />
 		<script
 			src="https://code.jquery.com/jquery-3.6.1.min.js"
 			integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
 			crossorigin="anonymous"
 		></script>
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
 		<title>Form</title>
 	</head>
 	<body>
-		<h1 id="title">問い合わせフォーム</h1>
-		<form id="form" action="/confirmation.php" method="post">
-			<label for="name">名前</label>
-			<input id="name" type="text" name="name" />
-			<span id="err-name" class="error"></span>
-			<button type="submit">送信</button>
-		</form>
+		<!-- 入力フォーム画面 -->
+		<h1 id="title">お問い合わせ</h1>
+		<div class="inquery-form">
+			<h2>お問い合わせフォーム</h2>
+			<form id="form" action="" method="post" novalidate>
+				<ul>
+					<!-- 名前（必須）-->
+					<li>
+						<label for="name">名前</label>
+						<input id="name" type="text" name="name" required maxlength="50" />
+						<div id="name-error" class="error"></div>
+					</li>
+					<!-- 性別（選択式・必須）-->
+					<li>
+						<fieldset id="sex">
+							<legend>性別</legend>
+							<label for="r1">男性</label>
+							<input type="radio" required name="sex" id="male" value="1" />
+							<label for="r2">女性</label>
+							<input type="radio" required name="sex" id="female" value="2" />
+							<label for="r3">その他</label>
+							<input type="radio" required name="sex" id="other" value="9" />
+						</fieldset>
+						<div id="sex-error" class="error"></div>
+					</li>
+					<!-- 生年月日 （必須）-->
+					<li>
+						<label for="date-of-birth">生年月日</label>
+						<input type="date" name="date-of-birth" id="date-of-birth" required />
+						<div id="dob-error" class="error"></div>
+					</li>
+					<!-- 郵便番号（必須） -->
+					<li>
+						<label for="postal-code">郵便番号（必須）</label>
+						<input
+							type="text"
+							name="postal-code"
+							id="postal-code"
+							required
+							pattern="\d{3}-?\d{4}"
+						/>
+						<div id="postal-code-error" class="error"></div>
+					</li>
+					<!-- 住所（必須・200文字以内） -->
+					<li>
+						<label for="pref">都道府県</label>
+						<select name="pref" id="pref" required>
+							<option value="" selected>都道府県</option>
+							<option value="北海道">北海道</option>
+							<option value="青森県">青森県</option>
+							<option value="岩手県">岩手県</option>
+							<option value="宮城県">宮城県</option>
+							<option value="秋田県">秋田県</option>
+							<option value="山形県">山形県</option>
+							<option value="福島県">福島県</option>
+							<option value="茨城県">茨城県</option>
+							<option value="栃木県">栃木県</option>
+							<option value="群馬県">群馬県</option>
+							<option value="埼玉県">埼玉県</option>
+							<option value="千葉県">千葉県</option>
+							<option value="東京都">東京都</option>
+							<option value="神奈川県">神奈川県</option>
+							<option value="新潟県">新潟県</option>
+							<option value="富山県">富山県</option>
+							<option value="石川県">石川県</option>
+							<option value="福井県">福井県</option>
+							<option value="山梨県">山梨県</option>
+							<option value="長野県">長野県</option>
+							<option value="岐阜県">岐阜県</option>
+							<option value="静岡県">静岡県</option>
+							<option value="愛知県">愛知県</option>
+							<option value="三重県">三重県</option>
+							<option value="滋賀県">滋賀県</option>
+							<option value="京都府">京都府</option>
+							<option value="大阪府">大阪府</option>
+							<option value="兵庫県">兵庫県</option>
+							<option value="奈良県">奈良県</option>
+							<option value="和歌山県">和歌山県</option>
+							<option value="鳥取県">鳥取県</option>
+							<option value="島根県">島根県</option>
+							<option value="岡山県">岡山県</option>
+							<option value="広島県">広島県</option>
+							<option value="山口県">山口県</option>
+							<option value="徳島県">徳島県</option>
+							<option value="香川県">香川県</option>
+							<option value="愛媛県">愛媛県</option>
+							<option value="高知県">高知県</option>
+							<option value="福岡県">福岡県</option>
+							<option value="佐賀県">佐賀県</option>
+							<option value="長崎県">長崎県</option>
+							<option value="熊本県">熊本県</option>
+							<option value="大分県">大分県</option>
+							<option value="宮崎県">宮崎県</option>
+							<option value="鹿児島県">鹿児島県</option>
+							<option value="沖縄県">沖縄県</option>
+						</select>
+						<div id="pref-error" class="error"></div>
+						<label for="address">住所(市町村以降)</label>
+						<input type="text" name="address" id="address" required maxlength="200" />
+						<div id="address-error" class="error"></div>
+					</li>
+					<!-- 電話番号（任意） -->
+					<li>
+						<label for="tel">電話番号(任意)</label>
+						<input type="tel" name="tel" id="tel" pattern="^0[-0-9]{9,12}$" />
+						<div id="tel-error" class="error"></div>
+					</li>
+					<!-- メールアドレス(任意・200文字以内) -->
+					<li>
+						<label for="email">メールアドレス(任意・200文字以内)</label>
+						<input type="email" name="email" id="email" maxlength="200" />
+						<div id="email-error" class="error"></div>
+					</li>
+					<!-- 問い合わせの種類(選択式・必須) -->
+					<li>
+						<label for="inquery-type">お問い合わせの種類</label>
+						<select name="inquery-type" id="inquery-type" required>
+							<option value="">--</option>
+							<option value="1">ホームページに関して</option>
+							<option value="2">製品に関して</option>
+							<option value="3">会社に関して</option>
+							<option value="4">その他</option>
+						</select>
+						<div id="inquery-type-error" class="error"></div>
+					</li>
+					<!-- 相談内容(必須・1000文字以内) -->
+					<li>
+						<label for="inquery-body">お問い合わせ内容</label>
+						<textarea
+							name="inquery-body"
+							id="inquery-body"
+							cols="50"
+							rows="10"
+							maxlength="1000"
+							required
+							placeholder="お問い合わせ内容を入力してください"
+						></textarea>
+						<div id="inquery-body-error" class="error"></div>
+					</li>
+				</ul>
+				<button type="submit">確認</button>
+			</form>
+			<button id="set-sample-button">サンプルデータをセット</button>
+		</div>
+
+		<!-- 確認画面 -->
+		<div class="inquery-confirmation">
+			<h2>確認画面</h2>
+			<ul>
+				<li id="confirmation-name" class="confirmation">名前：<span></span></li>
+				<li id="confirmation-sex" class="confirmation">性別：<span></span></li>
+				<li id="confirmation-DoB" class="confirmation">生年月日：<span></span></li>
+				<li id="confirmation-postal-code" class="confirmation">郵便番号：<span></span></li>
+				<li id="confirmation-address" class="confirmation">住所：<span></span></li>
+				<li id="confirmation-tel" class="confirmation">電話番号：<span></span></li>
+				<li id="confirmation-email" class="confirmation">メールアドレス：<span></span></li>
+				<li id="confirmation-inquery-type" class="confirmation">
+					お問い合わせの種類：<span></span>
+				</li>
+				<li id="confirmation-inquery-body" class="confirmation">お問い合わせ内容：<span></span></li>
+			</ul>
+
+			<button id="register-button">送信</button>
+			<button id="correct-btn">修正する</button>
+		</div>
 		<script src="/js/form.js"></script>
 	</body>
 </html>

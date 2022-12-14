@@ -1,6 +1,7 @@
 <?php
     require_once('php/validation.php');
-    $name = trim($_POST['name']);
+    $name = mb_convert_kana($_POST['name'], 's');
+    $name = trim($name);
     $rule_name = new ValidationRule;
     $rule_name->type = 'string';
     $rule_name->max_length = 50;
@@ -21,6 +22,11 @@
     <form id="data" action="/register.php" method="POST">
         <input type="hidden" name="name" value="<?= $name ?>">
         <div>名前：<?= $name ?></div>
+        <?php
+            if ($err_name) {
+                echo "名前は20文字以内で必ず入力してください";
+            }
+        ?>
         <button type="submit">送信</button>
     </form> 
 </body>

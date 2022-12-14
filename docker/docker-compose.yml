@@ -15,8 +15,6 @@ services:
   mysql:
     container_name: docker-compose-mysql-mysql
     image: "arm64v8/mysql"
-    volumes:
-      - ./db/db_data:/var/lib/mysql
     ports:
       - "${FORWARD_DB_PORT}:3306"
     hostname: localhost
