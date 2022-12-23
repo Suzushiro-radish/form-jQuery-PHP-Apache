@@ -3,12 +3,12 @@ $(function () {
 	const sex = document.getElementById("male");
 	const dateOfBirth = document.getElementById("date-of-birth");
 	const postalCode = document.getElementById("postal-code");
-	const pref = document.getElementById("pref");
 	const address = document.getElementById("address");
 	const tel = document.getElementById("tel");
 	const email = document.getElementById("email");
 	const inqueryType = document.getElementById("inquery-type");
 	const inqueryBody = document.getElementById("inquery-body");
+
 	const sexList = { 1: "男性", 2: "女性", 9: "その他" };
 	const inqueryTypeList = {
 		1: "ホームページに関して",
@@ -49,7 +49,6 @@ $(function () {
 		const sex = $('input:radio[name="sex"]:checked').val();
 		const DoB = $("#date-of-birth").val();
 		const postalCode = $("#postal-code").val();
-		const pref = $("#pref").val();
 		const address = $("#address").val();
 		const tel = $("#tel").val();
 		const email = $("#email").val();
@@ -60,7 +59,6 @@ $(function () {
 			sex: sex,
 			date_of_birth: DoB,
 			postal_code: postalCode,
-			pref: pref,
 			address: address,
 			tel: tel,
 			email: email,
@@ -71,8 +69,14 @@ $(function () {
 		posting = $.post("/register.php", data);
 		posting
 			.done(function (res) {
-				console.log(res);
-				window.alert("登録成功");
+				const result = JSON.parse(res);
+				console.log(result);
+				if (result.status && result.status === "success") {
+					window.alert("登録成功");
+				} else {
+					window.alert("登録に失敗しました");
+					showForm();
+				}
 			})
 			.fail(function () {
 				window.alert(res);
@@ -86,85 +90,49 @@ $(function () {
 
 	// フォームの検証（個別）
 	{
-		$("#name").change(function (e) {
+		$("#name").on("change keyup", function (e) {
 			e.preventDefault();
-			if (name.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateName();
 		});
 
-		$("#sex").change(function (e) {
+		$("#sex").on("change", function (e) {
 			e.preventDefault();
-			if (sex.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateSex();
 		});
 
-		$("#date-of-birth").change(function (e) {
+		$("#date-of-birth").on("change keyup", function (e) {
 			e.preventDefault();
-			if (dateOfBirth.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateDoB();
 		});
 
-		$("#postal-code").change(function (e) {
+		$("#postal-code").on("change keyup", function (e) {
 			e.preventDefault();
-			if (postalCode.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validatePostalCode();
 		});
 
-		$("#pref").change(function (e) {
+		$("#address").on("change keyup", function (e) {
 			e.preventDefault();
-			if (pref.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateAddress();
 		});
 
-		$("#tel").change(function (e) {
+		$("#tel").on("change keyup", function (e) {
 			e.preventDefault();
-			if (tel.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateTel();
 		});
 
-		$("#email").change(function (e) {
+		$("#email").on("change keyup", function (e) {
 			e.preventDefault();
-			if (email.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateEmail();
 		});
 
-		$("inquery-type").change(function (e) {
+		$("inquery-type").on("change", function (e) {
 			e.preventDefault();
-			if (inqueryType.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("inalid");
-			}
+			validateInqueryType();
 		});
 
-		$("#inquery-body").change(function (e) {
+		$("#inquery-body").on("change keyup", function (e) {
 			e.preventDefault();
-			if (inqueryBody.validity.valid) {
-				$(this).removeClass("invalid").next().text("").removeClass("active");
-			} else {
-				$(this).addClass("invalid");
-			}
+			validateInqueryBody();
 		});
 	}
 
@@ -182,79 +150,154 @@ $(function () {
 	const validateForm = () => {
 		let isValid = true;
 		//　名前のバリデーション
+		if (!validateName()) isValid = false;
+		// 性別のバリデーション
+		if (!validateSex()) isValid = false;
+		// 生年月日のバリデーション
+		if (!validateDoB()) isValid = false;
+		// 郵便番号のバリデーション
+		if (!validatePostalCode()) isValid = false;
+		// 住所のバリデーション
+		if (!validateAddress()) isValid = false;
+		// 電話番号のバリエーション
+		if (!validateTel()) isValid = false;
+		// メールアドレスのバリデーション
+		if (!validateEmail()) isValid = false;
+		// お問い合わせの種類のバリデーション
+		if (!validateInqueryType()) isValid = false;
+		// お問い合わせ本文のバリデーション
+		if (!validateInqueryBody()) isValid = false;
+		return isValid;
+	};
+
+	const validateName = () => {
 		if (name.validity.valid) {
 			$("#name-error").text("").removeClass("active");
+			return true;
+		} else if (name.validity.valueMissing) {
+			$("#name-error").text("名前は必ず入力してください").addClass("active");
+			return false;
+		} else if (name.validity.tooLong) {
+			$("#name-error").text("名前は50文字以内で入力してください").addClass("active");
+			return false;
 		} else {
 			$("#name-error").text("名前は正しく入力してください").addClass("active");
-			isValid = false;
+			return false;
 		}
-		// 性別のバリデーション
+	};
+	const validateSex = () => {
 		if (sex.validity.valid) {
 			$("#sex-error").text("").removeClass("active");
+			return true;
+		} else if (sex.validity.valueMissing) {
+			$("#sex-error").text("性別は必ず入力してください").addClass("active");
+			return false;
 		} else {
 			$("#sex-error").text("性別は正しく入力してください").addClass("active");
-			isValid = false;
+			return false;
 		}
-		// 生年月日のバリデーション
+	};
+	const validateDoB = () => {
 		if (dateOfBirth.validity.valid) {
 			$("#dob-error").text("").removeClass("active");
+			return true;
+		} else if (dateOfBirth.validity.valueMissing) {
+			$("#dob-error").text("生年月日は必ず入力してください").addClass("active");
+			return false;
+		} else if (dateOfBirth.validity.patternMismatch) {
+			$("#dob-error").text("生年月日は正しい形式で入力してください").addClass("active");
+			return false;
 		} else {
 			$("#dob-error").text("生年月日は正しく入力してください").addClass("active");
-			isValid = false;
+			return false;
 		}
-		// 郵便番号のバリデーション
+	};
+	const validatePostalCode = () => {
 		if (postalCode.validity.valid) {
 			$("#postal-code-error").text("").removeClass("active");
+			return true;
+		} else if (postalCode.validity.valueMissing) {
+			$("#postal-code-error").text("郵便番号は必ず入力してください").addClass("active");
+			return false;
+		} else if (postalCode.validity.patternMismatch) {
+			$("#postal-code-error").text("郵便番号は正しい形式で入力してください").addClass("active");
+			return false;
 		} else {
-			$("#postal-code-error").text("郵便番号は正しく入力してください").addClass("active");
-			isValid = false;
+			$("#postal-code-error").text("郵便番号は正しい形式で入力してください").addClass("active");
+			return false;
 		}
-		// 都道府県のバリデーション
-		if (pref.validity.valid) {
-			$("#pref-error").text("").removeClass("active");
-		} else {
-			$("#pref-error").text("都道府県は正しく入力してください").addClass("active");
-			isValid = false;
-		}
-		// 住所のバリデーション
+	};
+	const validateAddress = () => {
 		if (address.validity.valid) {
 			$("#address-error").text("").removeClass("active");
+			return true;
+		} else if (address.validity.valueMissing) {
+			$("#address-error").text("住所は必ず入力してください").addClass("active");
+			return false;
+		} else if (address.validity.tooLong) {
+			$("#address-error").text("住所は200文字以内で入力してください").addClass("active");
+			return false;
 		} else {
 			$("#address-error").text("住所は正しく入力してください").addClass("active");
-			isValid = false;
+			return false;
 		}
-		// 電話番号のバリエーション
+	};
+	const validateTel = () => {
 		if (tel.validity.valid) {
 			$("#tel-error").text("").removeClass("active");
+			return true;
+		} else if (tel.validity.patternMismatch) {
+			$("#tel-error")
+				.text("電話番号は半角数字とハイフン(-)のみで入力してください")
+				.addClass("active");
+			return false;
 		} else {
-			$("#tel-error").text("電話番号は正しく入力してください").addClass("active");
-			isValid = false;
+			$("#tel-error").text("電話番号は正しい形式で入力してください").addClass("active");
+			return false;
 		}
-		// メールアドレスのバリデーション
+	};
+	const validateEmail = () => {
 		if (email.validity.valid) {
 			$("#email-error").text("").removeClass("active");
+			return true;
+		} else if (email.validity.typeMismatch) {
+			$("#email-error").text("有効なメールアドレスを入力してください").addClass("active");
+			return false;
+		} else if (email.validity.tooLong) {
+			$("#email-error").text("メールアドレスは200文字以内で入力してください").addClass("active");
+			return false;
 		} else {
-			$("#email-error").text("メールアドレスは正しく入力してください").addClass("active");
-			isValid = false;
+			$("#email-error").text("メールアドレスは正しい形式で入力してください").addClass("active");
+			return false;
 		}
-		// お問い合わせの種類のバリデーション
+	};
+	const validateInqueryType = () => {
 		if (inqueryType.validity.valid) {
 			$("#inquery-type-error").text("").removeClass("active");
+			return true;
 		} else {
-			$("#inquery-type-error")
-				.text("お問い合わせの種類は正しく入力してください")
-				.addClass("active");
-			isValid = false;
+			$("#inquery-type-error").text("お問い合わせの種類は必ず選択してください").addClass("active");
+			return false;
 		}
-		// お問い合わせ本文のバリデーション
+	};
+	const validateInqueryBody = () => {
 		if (inqueryBody.validity.valid) {
 			$("#inquery-body-error").text("").removeClass("active");
+			return true;
+		} else if (inqueryBody.validity.valueMissing) {
+			$("#inquery-body-error").text("お問い合わせ内容は必ず入力してください").addClass("active");
+			return false;
+		} else if (inqueryBody.validity.tooLong) {
+			$("#inquery-body-error")
+				.text("お問い合わせ内容は1000字以内で入力してください")
+				.addClass("active");
+			return false;
 		} else {
-			$("#inquery-body-error").text("お問い合わせ内容は正しく入力してください").addClass("active");
-			isValid = false;
+			$("#inquery-body-error")
+				.text("お問い合わせ内容は正しい形式で入力してください")
+				.addClass("active");
+			return false;
 		}
-
-		return isValid;
 	};
 
 	const setValOnConfirmation = () => {
@@ -262,7 +305,6 @@ $(function () {
 		const sex = $('input:radio[name="sex"]:checked').val();
 		const DoB = $("#date-of-birth").val();
 		const postalCode = $("#postal-code").val();
-		const pref = $("#pref").val();
 		const address = $("#address").val();
 		const tel = $("#tel").val();
 		const email = $("#email").val();
@@ -272,7 +314,7 @@ $(function () {
 		$("#confirmation-sex > span").text(sexList[sex]);
 		$("#confirmation-DoB > span").text(DoB);
 		$("#confirmation-postal-code > span").text(postalCode);
-		$("#confirmation-address > span").text(`${pref} ${address}`);
+		$("#confirmation-address > span").text(address);
 		$("#confirmation-tel > span").text(tel);
 		$("#confirmation-email > span").text(email);
 		$("#confirmation-inquery-type > span").text(`${inqueryType}: ${inqueryTypeList[inqueryType]}`);
@@ -289,8 +331,7 @@ $(function () {
 		$('input:radio[name="sex"]').val(["1"]);
 		$("#date-of-birth").val("2000-01-10");
 		$("#postal-code").val("123-4567");
-		$("#pref").val("埼玉県");
-		$("#address").val("北区3丁目15");
+		$("#address").val("埼玉県北区3丁目15");
 		$("#tel").val("09012345678");
 		$("#email").val("example@example.com");
 		$("#inquery-type").val(1);

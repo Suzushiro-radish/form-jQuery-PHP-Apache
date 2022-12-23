@@ -1,15 +1,16 @@
 <?php
-class Database {
+class Database
+{
     private static $dsn = 'mysql:dbname=form_db;host=docker-compose-mysql-mysql';
     private static $user = 'daiki';
     private static $password = 'pass';
 
-    public static function insertInquery(array $request){
+    public static function insertInquery(array $request)
+    {
         $name = $request["name"];
         $sex = $request['sex'];
         $date_of_birth = $request['date_of_birth'];
         $postal_code = $request['postal_code'];
-        $prefecture = $request['prefecture'];
         $address = $request['address'];
         $tel = $request['tel'];
         $email = $request['email'];
@@ -18,16 +19,15 @@ class Database {
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
             $sql = "INSERT INTO inquery (
-                    name, sex, date_of_birth, postal_code, prefecture, address, tel, email, inquery_type, inquery_body
+                    name, sex, date_of_birth, postal_code, address, tel, email, inquery_type, inquery_body
                 ) VALUES (
-                    :name, :sex, :date_of_birth, :postal_code, :prefecture, :address, :tel, :email, :inquery_type, :inquery_body
+                    :name, :sex, :date_of_birth, :postal_code, :address, :tel, :email, :inquery_type, :inquery_body
                 )";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':sex', $sex);
             $stmt->bindParam(':date_of_birth', $date_of_birth);
             $stmt->bindParam(':postal_code', $postal_code);
-            $stmt->bindParam(':prefecture', $prefecture);
             $stmt->bindParam(':address', $address);
             $stmt->bindParam(':tel', $tel);
             $stmt->bindParam(':email', $email);
@@ -41,7 +41,8 @@ class Database {
         }
     }
 
-    public static function createTable(){
+    public static function createTable()
+    {
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
             $drop_query = 'drop table inquery';
@@ -49,10 +50,9 @@ class Database {
             $query = 'CREATE TABLE inquery (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(20) CHARACTER SET utf8 NOT NULL,
-                sex VARCHAR(10) NOT NULL,
+                sex INT(1) NOT NULL,
                 date_of_birth DATE NOT NULL,
-                postal_code CHAR(8) NOT NULL,
-                prefecture VARCHAR(20) CHARACTER SET utf8 NOT NULL,
+                postal_code CHAR(7) NOT NULL,
                 address VARCHAR(200) CHARACTER SET utf8 NOT NULL,
                 tel VARCHAR(20),
                 email VARCHAR(200),
@@ -69,7 +69,8 @@ class Database {
         }
     }
 
-    public static function selectAll(){
+    public static function selectAll()
+    {
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
             $query = 'SELECT * FROM inquery';
@@ -83,7 +84,8 @@ class Database {
         }
     }
 
-    public static function deleteAll(){
+    public static function deleteAll()
+    {
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
             $query = 'DELETE FROM inquery';
@@ -96,4 +98,3 @@ class Database {
         }
     }
 }
-?>
