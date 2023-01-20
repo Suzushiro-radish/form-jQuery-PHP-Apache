@@ -11,12 +11,24 @@ p * {
 
 li {
 	list-style: none;
-	border-style: solid;
+	border-style: none;
 	margin: 5px 0 5px 0;
+}
+
+label {
+	display: block;
+}
+
+input {
+	width: 300px;
 }
 
 fieldset {
 	border-style: none;
+}
+
+.noDisplay {
+	display: none;
 }
 
 .invalid {

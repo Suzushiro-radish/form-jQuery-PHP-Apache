@@ -2,7 +2,7 @@
 class Database
 {
     private static $dsn = 'mysql:dbname=form_db;host=docker-compose-mysql-mysql';
-    private static $user = 'daiki';
+    private static $user = 'user';
     private static $password = 'pass';
 
     public static function insertInquery(array $request)
@@ -45,11 +45,11 @@ class Database
     {
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
-            $drop_query = 'drop table inquery';
+            $drop_query = 'drop table IF EXISTS inquery';
             $res = $pdo->query($drop_query);
-            $query = 'CREATE TABLE inquery (
+            $query = 'CREATE TABLE IF NOT EXISTS inquery (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(20) CHARACTER SET utf8 NOT NULL,
+                name VARCHAR(50) CHARACTER SET utf8 NOT NULL,
                 sex INT(1) NOT NULL,
                 date_of_birth DATE NOT NULL,
                 postal_code CHAR(7) NOT NULL,
