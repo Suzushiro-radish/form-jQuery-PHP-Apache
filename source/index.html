@@ -4,127 +4,216 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
 		<script
 			src="https://code.jquery.com/jquery-3.6.1.min.js"
 			integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
 			crossorigin="anonymous"
 		></script>
-		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600&display=swap"
+			rel="stylesheet"
+		/>
 		<title>Form</title>
 	</head>
 	<body>
-		<!-- 入力フォーム画面 -->
 		<h1 id="title">お問い合わせ</h1>
-		<div class="inquery-form">
-			<h2>お問い合わせフォーム</h2>
-			<form id="form" action="" method="post" novalidate>
+		<div class="container">
+			<!-- 入力フォーム画面 -->
+			<div class="inquery-form">
+				<h2>お問い合わせフォーム</h2>
+				<form id="form" action="" method="post" novalidate>
+					<ul>
+						<!-- 名前（必須）-->
+						<li>
+							<div class="label-group">
+								<span class="required">*</span>
+								<label for="name">名前</label>
+							</div>
+							<input id="name" class="text-input" type="text" name="name" required maxlength="50" />
+							<div id="name-error" class="error"></div>
+						</li>
+						<!-- 性別（選択式・必須）-->
+						<li>
+							<fieldset id="sex">
+								<div class="label-group">
+									<span class="required">*</span>
+									<legend>性別</legend>
+								</div>
+								<div class="radio-group">
+									<div class="radio-input">
+										<input type="radio" required name="sex" id="male" value="1" />
+										<label for="male">男性</label>
+									</div>
+									<div class="radio-input">
+										<input type="radio" required name="sex" id="female" value="2" />
+										<label for="female">女性</label>
+									</div>
+									<div class="radio-input">
+										<input type="radio" required name="sex" id="other" value="9" />
+										<label for="other">その他</label>
+									</div>
+								</div>
+							</fieldset>
+							<div id="sex-error" class="error"></div>
+						</li>
+						<!-- 生年月日 （必須）-->
+						<li>
+							<div class="label-group">
+								<span class="required">*</span>
+								<label for="date-of-birth">生年月日</label>
+							</div>
+							<input
+								type="date"
+								class="text-input"
+								name="date-of-birth"
+								id="date-of-birth"
+								required
+							/>
+							<div id="dob-error" class="error"></div>
+						</li>
+						<!-- 郵便番号（必須） -->
+						<li>
+							<div class="label-group">
+								<span class="required">*</span>
+								<label for="postal-code">郵便番号（必須）</label>
+							</div>
+							<input
+								type="text"
+								name="postal-code"
+								id="postal-code"
+								required
+								pattern="\d{3}-?\d{4}"
+								class="text-input"
+							/>
+							<div id="postal-code-error" class="error"></div>
+						</li>
+						<!-- 住所（必須・200文字以内） -->
+						<li>
+							<div class="label-group">
+								<span class="required">*</span>
+								<label for="address">住所</label>
+							</div>
+							<input
+								type="text"
+								class="text-input"
+								name="address"
+								id="address"
+								required
+								maxlength="200"
+							/>
+							<div id="address-error" class="error"></div>
+						</li>
+						<!-- 電話番号（任意） -->
+						<li>
+							<div class="label-group">
+								<label for="tel">電話番号</label>
+							</div>
+							<input type="tel" class="text-input" name="tel" id="tel" pattern="^0[-0-9]{9,12}$" />
+							<div id="tel-error" class="error"></div>
+						</li>
+						<!-- メールアドレス(任意・200文字以内) -->
+						<li>
+							<div class="label-group">
+								<label for="email">メールアドレス</label>
+							</div>
+							<input type="email" class="text-input" name="email" id="email" maxlength="200" />
+							<div id="email-error" class="error"></div>
+						</li>
+						<!-- 問い合わせの種類(選択式・必須) -->
+						<li>
+							<div class="label-group">
+								<span class="required">*</span>
+								<label for="inquery-type">お問い合わせの種類</label>
+							</div>
+							<select name="inquery-type" id="inquery-type" required>
+								<option value="">未選択</option>
+								<option value="1">ホームページに関して</option>
+								<option value="2">製品に関して</option>
+								<option value="3">会社に関して</option>
+								<option value="4">その他</option>
+							</select>
+							<div id="inquery-type-error" class="error"></div>
+						</li>
+						<!-- 相談内容(必須・1000文字以内) -->
+						<li>
+							<div class="label-group">
+								<span class="required">*</span>
+								<label for="inquery-body">お問い合わせ内容</label>
+							</div>
+							<textarea
+								name="inquery-body"
+								id="inquery-body"
+								cols="50"
+								rows="10"
+								maxlength="1000"
+								required
+								placeholder="お問い合わせ内容を入力してください"
+							></textarea>
+							<div id="inquery-body-error" class="error"></div>
+						</li>
+					</ul>
+					<div class="button-group">
+						<button type="submit">確認</button>
+					</div>
+				</form>
+				<button id="set-sample-button">サンプルデータをセット</button>
+			</div>
+
+			<!-- 確認画面 -->
+			<div class="inquery-confirmation noDisplay">
+				<h2>確認画面</h2>
 				<ul>
-					<!-- 名前（必須）-->
-					<li>
-						<label for="name">名前</label>
-						<input id="name" type="text" name="name" required maxlength="50" />
-						<div id="name-error" class="error"></div>
+					<li id="confirmation-name" class="confirmation">
+						<div>名前</div>
+						<span></span>
 					</li>
-					<!-- 性別（選択式・必須）-->
-					<li>
-						<fieldset id="sex">
-							<legend>性別</legend>
-							<label for="r1">男性</label>
-							<input type="radio" required name="sex" id="male" value="1" />
-							<label for="r2">女性</label>
-							<input type="radio" required name="sex" id="female" value="2" />
-							<label for="r3">その他</label>
-							<input type="radio" required name="sex" id="other" value="9" />
-						</fieldset>
-						<div id="sex-error" class="error"></div>
+					<li id="confirmation-sex" class="confirmation">
+						<div>性別</div>
+						<span></span>
 					</li>
-					<!-- 生年月日 （必須）-->
-					<li>
-						<label for="date-of-birth">生年月日</label>
-						<input type="date" name="date-of-birth" id="date-of-birth" required />
-						<div id="dob-error" class="error"></div>
+					<li id="confirmation-DoB" class="confirmation">
+						<div>生年月日</div>
+						<span></span>
 					</li>
-					<!-- 郵便番号（必須） -->
-					<li>
-						<label for="postal-code">郵便番号（必須）</label>
-						<input
-							type="text"
-							name="postal-code"
-							id="postal-code"
-							required
-							pattern="\d{3}-?\d{4}"
-						/>
-						<div id="postal-code-error" class="error"></div>
+					<li id="confirmation-postal-code" class="confirmation">
+						<div>郵便番号</div>
+						<span></span>
 					</li>
-					<!-- 住所（必須・200文字以内） -->
-					<li>
-						<label for="address">住所</label>
-						<input type="text" name="address" id="address" required maxlength="200" />
-						<div id="address-error" class="error"></div>
+					<li id="confirmation-address" class="confirmation">
+						<div>住所</div>
+						<span></span>
 					</li>
-					<!-- 電話番号（任意） -->
-					<li>
-						<label for="tel">電話番号(任意)</label>
-						<input type="tel" name="tel" id="tel" pattern="^0[-0-9]{9,12}$" />
-						<div id="tel-error" class="error"></div>
+					<li id="confirmation-tel" class="confirmation">
+						<div>電話番号</div>
+						<span></span>
 					</li>
-					<!-- メールアドレス(任意・200文字以内) -->
-					<li>
-						<label for="email">メールアドレス(任意・200文字以内)</label>
-						<input type="email" name="email" id="email" maxlength="200" />
-						<div id="email-error" class="error"></div>
+					<li id="confirmation-email" class="confirmation">
+						<div>メールアドレス</div>
+						<span></span>
 					</li>
-					<!-- 問い合わせの種類(選択式・必須) -->
-					<li>
-						<label for="inquery-type">お問い合わせの種類</label>
-						<select name="inquery-type" id="inquery-type" required>
-							<option value="">未選択</option>
-							<option value="1">ホームページに関して</option>
-							<option value="2">製品に関して</option>
-							<option value="3">会社に関して</option>
-							<option value="4">その他</option>
-						</select>
-						<div id="inquery-type-error" class="error"></div>
+					<li id="confirmation-inquery-type" class="confirmation">
+						<div>お問い合わせの種類</div>
+						<span></span>
 					</li>
-					<!-- 相談内容(必須・1000文字以内) -->
-					<li>
-						<label for="inquery-body">お問い合わせ内容</label>
-						<textarea
-							name="inquery-body"
-							id="inquery-body"
-							cols="50"
-							rows="10"
-							maxlength="1000"
-							required
-							placeholder="お問い合わせ内容を入力してください"
-						></textarea>
-						<div id="inquery-body-error" class="error"></div>
+					<li id="confirmation-inquery-body" class="confirmation">
+						<div>お問い合わせ内容</div>
+						<span></span>
 					</li>
 				</ul>
-				<button type="submit">確認</button>
-			</form>
-			<button id="set-sample-button">サンプルデータをセット</button>
-		</div>
+				<div class="button-group">
+					<button id="register-button">送信</button>
+					<button id="correct-btn">修正</button>
+				</div>
+			</div>
 
-		<!-- 確認画面 -->
-		<div class="inquery-confirmation">
-			<h2>確認画面</h2>
-			<ul>
-				<li id="confirmation-name" class="confirmation">名前：<span></span></li>
-				<li id="confirmation-sex" class="confirmation">性別：<span></span></li>
-				<li id="confirmation-DoB" class="confirmation">生年月日：<span></span></li>
-				<li id="confirmation-postal-code" class="confirmation">郵便番号：<span></span></li>
-				<li id="confirmation-address" class="confirmation">住所：<span></span></li>
-				<li id="confirmation-tel" class="confirmation">電話番号：<span></span></li>
-				<li id="confirmation-email" class="confirmation">メールアドレス：<span></span></li>
-				<li id="confirmation-inquery-type" class="confirmation">
-					お問い合わせの種類：<span></span>
-				</li>
-				<li id="confirmation-inquery-body" class="confirmation">お問い合わせ内容：<span></span></li>
-			</ul>
-
-			<button id="register-button">送信</button>
-			<button id="correct-btn">修正する</button>
+			<!-- 完了画面 -->
+			<div class="completed noDisplay">
+				<h2>完了画面</h2>
+				<div>お問い合わせ内容の送信が完了しました。</div>
+			</div>
 		</div>
 		<script src="/js/form.js"></script>
 	</body>

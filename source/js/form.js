@@ -17,13 +17,13 @@ $(function () {
 		4: "その他",
 	};
 
-	// 確認画面を隠す
+	// 確認画面,完了画面を隠す
 	$(".inquery-confirmation").hide();
+	$(".completed").hide();
 
 	// 生年月日の制限を設定
 	const now = new Date();
-	const maxDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
-	console.log(maxDate);
+	const maxDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 	$("#date-of-birth").attr("max", maxDate);
 
 	$(".inquery-form > form").on("submit", function (event) {
@@ -70,16 +70,15 @@ $(function () {
 		posting
 			.done(function (res) {
 				const result = JSON.parse(res);
-				console.log(result);
 				if (result.status && result.status === "success") {
-					window.alert("登録成功");
+					showCompleted();
 				} else {
 					window.alert("登録に失敗しました");
 					showForm();
 				}
 			})
 			.fail(function () {
-				window.alert(res);
+				window.alert("登録に失敗しました");
 			});
 	});
 
@@ -125,7 +124,7 @@ $(function () {
 			validateEmail();
 		});
 
-		$("inquery-type").on("change", function (e) {
+		$("#inquery-type").on("change", function (e) {
 			e.preventDefault();
 			validateInqueryType();
 		});
@@ -135,17 +134,6 @@ $(function () {
 			validateInqueryBody();
 		});
 	}
-
-	const showForm = () => {
-		$(".inquery-confirmation").hide();
-		$(".inquery-form").show();
-	};
-
-	const showConfirmation = () => {
-		setValOnConfirmation();
-		$(".inquery-form").hide();
-		$(".inquery-confirmation").show();
-	};
 
 	const validateForm = () => {
 		let isValid = true;
@@ -206,6 +194,9 @@ $(function () {
 			return false;
 		} else if (dateOfBirth.validity.patternMismatch) {
 			$("#dob-error").text("生年月日は正しい形式で入力してください").addClass("active");
+			return false;
+		} else if (dateOfBirth.validity.rangeOverflow) {
+			$("#dob-error").text("生年月日現在よりも過去の日付を入力してください").addClass("active");
 			return false;
 		} else {
 			$("#dob-error").text("生年月日は正しく入力してください").addClass("active");
@@ -298,6 +289,22 @@ $(function () {
 				.addClass("active");
 			return false;
 		}
+	};
+
+	const showForm = () => {
+		$(".inquery-confirmation").hide();
+		$(".inquery-form").show();
+	};
+
+	const showConfirmation = () => {
+		setValOnConfirmation();
+		$(".inquery-form").hide();
+		$(".inquery-confirmation").show();
+	};
+
+	const showCompleted = () => {
+		$(".inquery-confirmation").hide();
+		$(".completed").show();
 	};
 
 	const setValOnConfirmation = () => {

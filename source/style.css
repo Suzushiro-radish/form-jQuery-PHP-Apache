@@ -1,8 +1,23 @@
+html {
+	background-color: gray;
+}
+
 body {
-	font: 1em sans-serif;
-	width: fit-content;
-	padding: 0;
+	font-family: "Shippori Mincho B1", serif;
+}
+
+.container {
+	width: 60%;
+	padding: 40px;
 	margin: 0 auto;
+	background-color: white;
+	border-radius: 2%;
+}
+
+h2 {
+	margin-left: 50px;
+	margin-top: 0px;
+	font-size: xx-large;
 }
 
 p * {
@@ -11,24 +26,111 @@ p * {
 
 li {
 	list-style: none;
-	border-style: solid;
-	margin: 5px 0 5px 0;
+	border-style: none;
+	margin-bottom: 35px;
+}
+
+li > div > label {
+	display: block;
+	font-size: large;
+	margin-bottom: 10px;
+	margin-left: 20px;
+	text-align: left;
+}
+
+.label-group {
+	display: flex;
+}
+
+legend {
+	display: block;
+	font-size: large;
+	margin-bottom: 10px;
+	margin-left: 20px;
+	flex: none;
+	text-align: left;
 }
 
 fieldset {
+	display: flex;
+	flex-direction: column;
 	border-style: none;
+	padding: 0px;
+	margin: 0px 0px 10px 0px;
+}
+
+.radio-group {
+	display: flex;
+	flex-direction: row;
+}
+
+.radio-input {
+	display: flex;
+	flex-direction: row;
+	height: 20px;
+}
+
+.radio-input > input {
+	flex: auto;
+	height: 1.5em;
+	width: 1.5em;
+}
+
+.text-input {
+	height: 35px;
+	width: 90%;
+	font-size: large;
+	border: solid 1px gray;
+	border-radius: 0.5em;
+	padding: 0px 10px;
+}
+select {
+	width: 50%;
+	height: 40px;
+	font-size: large;
+	padding: 0px 20px;
+	border-radius: 0.5em;
+}
+
+textarea {
+	width: 90%;
+	border-radius: 0.5em;
+	padding: 10px;
+	font-size: large;
+}
+
+.button-group {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.button-group > button {
+	font-size: large;
+	margin-right: 30px;
+	height: 60px;
+	width: 80px;
+	border-radius: 1em;
+	background-color: gray;
+	color: white;
+}
+
+.required {
+	color: red;
+}
+
+.noDisplay {
+	display: none;
 }
 
 .invalid {
 	border: red solid;
 }
 
-/* これはエラーメッセージ向けのスタイルです */
 .error {
 	width: fit-content;
 	padding: 0;
 
-	font-size: 80%;
+	font-size: large;
 	color: white;
 	border-radius: 5px;
 
@@ -38,4 +140,22 @@ fieldset {
 .error.active {
 	padding: 0.3em;
 	background-color: #900;
+}
+
+.inquery-confirmation li {
+	margin-bottom: 40px;
+}
+
+.confirmation div {
+	font-size: large;
+	color: gray;
+}
+
+.confirmation span {
+	font-size: x-large;
+}
+
+.button-group > #correct-btn {
+	background-color: white;
+	color: black;
 }
