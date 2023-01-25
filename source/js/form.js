@@ -78,7 +78,7 @@ $(function () {
 				}
 			})
 			.fail(function () {
-				window.alert(res);
+				window.alert("登録に失敗しました");
 			});
 	});
 
@@ -194,6 +194,9 @@ $(function () {
 			return false;
 		} else if (dateOfBirth.validity.patternMismatch) {
 			$("#dob-error").text("生年月日は正しい形式で入力してください").addClass("active");
+			return false;
+		} else if (dateOfBirth.validity.rangeOverflow) {
+			$("#dob-error").text("生年月日現在よりも過去の日付を入力してください").addClass("active");
 			return false;
 		} else {
 			$("#dob-error").text("生年月日は正しく入力してください").addClass("active");
